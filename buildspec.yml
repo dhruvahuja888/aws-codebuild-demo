@@ -2,34 +2,29 @@ version: 0.2
 
 phases:
   install:
+    runtime-versions:
+      python: 3.9
     commands:
-      - echo "Installing dependencies..."
-      - curl -L https://github.com/prowler-cloud/prowler/releases/latest/download/prowler-linux-amd64 -o prowler
-      - chmod +x prowler
-      - mv prowler /usr/local/bin/prowler
+      - echo "Installing Prowler..."
+      - pip install --upgrade pip
+      - pip install prowler
 
   pre_build:
     commands:
-      - echo "Starting CIS AWS Benchmark Scan using Prowler..."
-      # Ensure AWS credentials are available via CodeBuild IAM role
+      - echo "Validating AWS credentials..."
       - aws sts get-caller-identity
 
   build:
     commands:
+      - echo "Running CIS AWS benchmark scan..."
       - mkdir -p output
-      - prowler aws \
-          --compliance cis_aws \
-          --output formats json,csv,html \
-          --output-directory output
-      - echo "CIS scan completed."
+      - prowler aws --compliance cis_aws --output reports --output-directory output
 
   post_build:
     commands:
-      - echo "Listing results..."
+      - echo "Scan complete. Output files:"
       - ls -R output
-
 artifacts:
   files:
     - output/**
   discard-paths: no
-  name: cis-scan-results-$(date +%Y-%m-%d_%H-%M)
