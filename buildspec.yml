@@ -1,35 +1,16 @@
 version: 0.2
-
 phases:
   install:
     runtime-versions:
       python: 3.9
     commands:
-      - echo "Installing Prowler..."
-      - pip install --upgrade pip
       - pip install prowler
-
   pre_build:
     commands:
-      - echo "Validating AWS credentials..."
-      - aws sts get-caller-identity
-      - prowler --version
-
+      - mkdir -p output
   build:
     commands:
-      - echo "Running CIS AWS benchmark scan..."
-      - mkdir -p output
-      - prowler aws \
-          --compliance cis_aws \
-          --output formats json,csv,html \
-          --output-directory output
-
-  post_build:
-    commands:
-      - echo "Scan complete. Output files:"
-      - ls -R output
-
+      - prowler aws --compliance cis_aws --output-formats json,csv,html --output-directory output
 artifacts:
   files:
-    - output/**
-  discard-paths: no
+    - 'output/**/*'
