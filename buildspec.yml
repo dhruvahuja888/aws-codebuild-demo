@@ -13,17 +13,22 @@ phases:
     commands:
       - echo "Validating AWS credentials..."
       - aws sts get-caller-identity
+      - prowler --version
 
   build:
     commands:
       - echo "Running CIS AWS benchmark scan..."
       - mkdir -p output
-      - prowler aws --compliance cis_aws --output reports --output-directory output
+      - prowler aws \
+          --compliance cis_aws \
+          --format json,csv,html \
+          --output-dir output
 
   post_build:
     commands:
       - echo "Scan complete. Output files:"
       - ls -R output
+
 artifacts:
   files:
     - output/**
