@@ -10,7 +10,7 @@ phases:
       - mkdir -p output
   build:
     commands:
-      - prowler aws --compliance cis_aws --output-formats json,csv,html --output-directory output
+      - prowler aws --compliance cis_1.5_aws --output-formats json,csv,html --output-directory output
 artifacts:
   files:
     - 'output/**/*'
