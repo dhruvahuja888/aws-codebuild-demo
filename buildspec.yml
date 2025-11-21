@@ -19,7 +19,10 @@ phases:
     commands:
       - echo "Running CIS AWS benchmark scan..."
       - mkdir -p output
-      - prowler aws --framework aws_cis_1.5 --format json,csv,html --output-dir output
+      - prowler aws \
+          --compliance cis_aws \
+          --output formats json,csv,html \
+          --output-directory output
 
   post_build:
     commands:
