@@ -20,7 +20,7 @@ phases:
   build:
     commands:
       - source prowler-venv/bin/activate
-      - prowler aws --compliance cis_1.2_aws --output-formats csv --output-directory output 
+      - prowler aws --compliance cis_1.2_aws --output-formats json-asff csv html --output-directory output 
 
 artifacts:
   files:
