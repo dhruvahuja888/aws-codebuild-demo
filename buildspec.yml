@@ -1,16 +1,27 @@
 version: 0.2
+
 phases:
   install:
     runtime-versions:
       python: 3.9
     commands:
-      - pip install prowler
+      - echo "Creating virtual environment for Prowler"
+      - python -m venv prowler-venv
+      - source prowler-venv/bin/activate
+      - pip install --upgrade pip
+      - pip install prowler==5.16.1
+      - prowler --version
+
   pre_build:
     commands:
+      - source prowler-venv/bin/activate
       - mkdir -p output
+
   build:
     commands:
-      - prowler aws --compliance cis_1.5_aws --output-formats json-asff --output-directory output
+      - source prowler-venv/bin/activate
+      - prowler aws --compliance cis_1.2_aws --output-formats csv html --output-directory output 
+
 artifacts:
   files:
     - 'output/**/*'
