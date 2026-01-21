@@ -19,7 +19,7 @@ phases:
 
   build:
     commands:
-      - prowler aws --compliance cis_1.2_aws --output-formats json-asff --output-directory output || true
+      - prowler aws --compliance cis_1.2_aws --output-formats json-asff csv html --output-directory output || true
 
 artifacts:
   files:
